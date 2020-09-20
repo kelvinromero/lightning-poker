@@ -1,4 +1,4 @@
-require 'set'
+require "set"
 require "card.rb"
 
 # What you right here, should be relatively close to what you speak
@@ -20,46 +20,52 @@ describe "a playing card" do
     raise unless card(rank: 4).rank == 4
   end
 
-  it 'is equal to itself' do
-    subject = card(suit: :spades, rank: 4)
-    other = card(suit: :spades, rank: 4)
+  context "comparison" do
+    def subject
+      @subject ||= card(suit: :spades, rank: 4)
+    end
 
-    raise unless subject == other
-  end
+    context "against itself" do
+      def other
+        @other ||= card(suit: :spades, rank: 4)
+      end
 
-  it 'is hash equal to itself' do
-    subject = card(suit: :spades, rank: 4)
-    other   = card(suit: :spades, rank: 4)
+      it "is equal" do
+        raise unless subject == other
+      end
 
-    raise unless Set.new([subject, other]).size == 1
-  end
+      it "is hash equal" do
+        raise unless Set.new([subject, other]).size == 1
+      end
+    end
 
-  it 'is not equal to card of different suit' do
-    subject = card(suit: :spades, rank: 4)
-    other = card(suit: :hearts, rank: 4)
+    context "when different suit" do
+      def other
+        @other ||= card(suit: :hearts, rank: 4)
+      end
 
-    raise unless subject != other
-  end
-  
-  it 'is not hash equal to card of different suit' do
-    subject = card(suit: :spades, rank: 4)
-    other = card(suit: :hearts, rank: 4)
+      it "is not equal" do
+        raise unless subject != other
+      end
 
-    raise unless Set.new([subject, other]).size == 2
-  end
+      it "is not hash equal" do
+        raise unless Set.new([subject, other]).size == 2
+      end
+    end
 
-  it 'is not equal to card of different rank' do
-    subject = card(suit: :spades, rank: 4)
-    other = card(suit: :spades, rank: 3)
-
-    raise unless subject != other
-  end
-
-  it 'is not hash equal to card of different rank' do
-    subject = card(suit: :spades, rank: 4)
-    other = card(suit: :spades, rank: 3)
-
-    raise unless Set.new([subject, other]).size == 2
+    context "when different rank" do
+        def other 
+            @other = card(suit: :spades, rank: 3)
+        end
+        it "is not equal to card of different rank" do
+            raise unless subject != other
+          end
+      
+          it "is not hash equal to card of different rank" do
+            raise unless Set.new([subject, other]).size == 2
+          end
+    end
+    
   end
 
   # One thing about this specific example:
