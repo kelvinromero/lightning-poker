@@ -1,3 +1,4 @@
+require 'set'
 require "card.rb"
 
 # What you right here, should be relatively close to what you speak
@@ -8,7 +9,7 @@ describe "a playing card" do
       rank: 7,
     }
 
-    card(**defaults.merge(params))
+    Card.build(*defaults.merge(params).values_at(:suit, :rank))
   end
 
   it "has a suit" do
@@ -17,6 +18,48 @@ describe "a playing card" do
 
   it "has a rank" do
     raise unless card(rank: 4).rank == 4
+  end
+
+  it 'is equal to itself' do
+    subject = card(suit: :spades, rank: 4)
+    other = card(suit: :spades, rank: 4)
+
+    raise unless subject == other
+  end
+
+  it 'is hash equal to itself' do
+    subject = card(suit: :spades, rank: 4)
+    other   = card(suit: :spades, rank: 4)
+
+    raise unless Set.new([subject, other]).size == 1
+  end
+
+  it 'is not equal to card of different suit' do
+    subject = card(suit: :spades, rank: 4)
+    other = card(suit: :hearts, rank: 4)
+
+    raise unless subject != other
+  end
+  
+  it 'is not hash equal to card of different suit' do
+    subject = card(suit: :spades, rank: 4)
+    other = card(suit: :hearts, rank: 4)
+
+    raise unless Set.new([subject, other]).size == 2
+  end
+
+  it 'is not equal to card of different rank' do
+    subject = card(suit: :spades, rank: 4)
+    other = card(suit: :spades, rank: 3)
+
+    raise unless subject != other
+  end
+
+  it 'is not hash equal to card of different rank' do
+    subject = card(suit: :spades, rank: 4)
+    other = card(suit: :spades, rank: 3)
+
+    raise unless Set.new([subject, other]).size == 2
   end
 
   # One thing about this specific example:
