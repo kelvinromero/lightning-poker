@@ -39,11 +39,7 @@ describe "a playing card" do
       end
     end
 
-    context "when different suit" do
-      def other
-        @other ||= card(suit: :hearts, rank: 4)
-      end
-
+    shared_examples_for "an unequal card" do
       it "is not equal" do
         raise unless subject != other
       end
@@ -53,50 +49,49 @@ describe "a playing card" do
       end
     end
 
+    context "when different suit" do
+      def other
+        @other ||= card(suit: :hearts, rank: 4)
+      end
+
+      it_behaves_like "an unequal card"
+    end
+
     context "when different rank" do
-        def other 
-            @other = card(suit: :spades, rank: 3)
-        end
-        it "is not equal to card of different rank" do
-            raise unless subject != other
-          end
-      
-          it "is not hash equal to card of different rank" do
-            raise unless Set.new([subject, other]).size == 2
-          end
+      def other
+        @other = card(suit: :spades, rank: 3)
+      end
+
+      it_behaves_like "an unequal card"
     end
-    
   end
 
-  # One thing about this specific example:
-  # We could test the exact value, but we should rather test the desired behavior
-  # For instance ranking higher or lower.
-  # The lesson talks about writing for confidence, not proof.
-  # one branch / spec (what does that mean?)
-  describe "a jack" do
-    it "ranks higher than a 10" do
-      lower = card(rank: 10)
-      higher = card(rank: :jack)
-
+  shared_examples_for "a card ranking higher" do
+    it "ranks higher" do
       raise unless lower.rank < higher.rank
     end
   end
 
-  describe "a quen" do
-    it "ranks higher than a jack" do
-      lower = card(rank: :jack)
-      higher = card(rank: :queen)
+  context "when ranking" do
+    context "jack against 10" do
+        let (:lower) { card(rank: 10 )}
+        let (:higher) { card(rank: :jack )}
 
-      raise unless lower.rank < higher.rank
+        it_behaves_like "a card ranking higher"
     end
-  end
 
-  describe "a king" do
-    it "ranks higher than a queen" do
-      lower = card(rank: :queen)
-      higher = card(rank: :king)
+    context "queen against jack" do
+        let (:lower) { card(rank: :jack )}
+        let (:higher) { card(rank: :queen )}
 
-      raise unless lower.rank < higher.rank
+        it_behaves_like "a card ranking higher"
+    end
+
+    context "king against queen" do
+        let (:lower) { card(rank: :queen )}
+        let (:higher) { card(rank: :king )}
+
+        it_behaves_like "a card ranking higher"
     end
   end
 end
