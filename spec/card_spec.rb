@@ -24,7 +24,7 @@ describe "a playing card" do
     subject { card(suit: :spades, rank: 4) }
 
     context "against itself" do
-      let (:other) card(suit: :spades, rank: 4)
+      let (:other) { card(suit: :spades, rank: 4) }
 
       it "is equal" do
         raise unless subject == other
@@ -46,13 +46,13 @@ describe "a playing card" do
     end
 
     context "when different suit" do
-      let (:other) card(suit: :hearts, rank: 4)
+      let (:other) { card(suit: :hearts, rank: 4) }
 
       it_behaves_like "an unequal card"
     end
 
     context "when different rank" do
-      let (:other) card(suit: :spades, rank: 3)
+      let (:other) { card(suit: :spades, rank: 3) }
 
       it_behaves_like "an unequal card"
     end
