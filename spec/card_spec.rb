@@ -13,11 +13,11 @@ describe "a playing card" do
   end
 
   it "has a suit" do
-    raise unless card(suit: :spaces).suit == :spaces
+    expect(card(suit: :spaces).suit).to eq(:spaces)
   end
 
   it "has a rank" do
-    raise unless card(rank: 4).rank == 4
+    expect(card(rank: 4).rank).to eq(4)
   end
 
   context "comparison" do
@@ -27,21 +27,21 @@ describe "a playing card" do
       let (:other) { card(suit: :spades, rank: 4) }
 
       it "is equal" do
-        raise unless subject == other
+        expect(subject).to eq(other)
       end
 
       it "is hash equal" do
-        raise unless Set.new([subject, other]).size == 1
+        expect(Set.new([subject, other]).size).to eq(1)
       end
     end
 
     shared_examples_for "an unequal card" do
       it "is not equal" do
-        raise unless subject != other
+        expect(subject).not_to eq(other)
       end
 
       it "is not hash equal" do
-        raise unless Set.new([subject, other]).size == 2
+        expect(Set.new([subject, other]).size).to eq(2)
       end
     end
 
@@ -60,7 +60,7 @@ describe "a playing card" do
 
   shared_examples_for "a card ranking higher" do
     it "ranks higher" do
-      raise unless lower.rank < higher.rank
+      expect(lower.rank).to be < (higher.rank)
     end
   end
 
